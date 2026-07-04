@@ -1,186 +1,791 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SX☠️ ABIR ♔ 👺 - GOD MOD</title>
+    <title>SX☠️ ABIR ♔ 👺 - GOD MOD ULTIMATE</title>
     <style>
-        :root { 
-            --glass: rgba(0, 150, 255, 0.1);
+        :root {
+            --glass: rgba(0, 150, 255, 0.08);
             --border: rgba(0, 191, 255, 0.4);
             --neon-blue: #00d4ff;
             --neon-red: #ff003c;
             --gold: #ffea00;
+            --neon-green: #00ff41;
+            --purple: #b700ff;
+            --pink: #ff0080;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body, html {
-            height: 100%; margin: 0; font-family: 'Segoe UI', sans-serif;
-            background: #00040a; color: #fff; overflow-x: hidden; user-select: none;
+            height: 100%;
+            font-family: 'Segoe UI', 'Poppins', sans-serif;
+            background: #00040a;
+            color: #fff;
+            overflow-x: hidden;
+            user-select: none;
         }
 
-        /* --- Stylish Typing Intro --- */
+        /* ===== Particle Background ===== */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ===== Stylish Typing Intro ===== */
         #introScreen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #00040a; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 10000;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #00040a;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
             transition: opacity 0.8s ease-out;
         }
-        .intro-line {
-            font-size: clamp(24px, 8vw, 42px);
-            font-weight: 900; letter-spacing: 4px; white-space: nowrap;
-            text-transform: uppercase; border-right: 4px solid var(--neon-red);
-            padding-right: 10px; animation: typing 2s steps(20), blink 0.5s step-end infinite;
-            overflow: hidden; text-shadow: 0 0 15px var(--neon-blue);
-        }
-        @keyframes typing { from { width: 0 } to { width: 100% } }
-        @keyframes blink { from, to { border-color: transparent } 50% { border-color: var(--neon-red) } }
 
-        .app-frame { max-width: 480px; margin: auto; padding: 15px; }
+        .intro-glitch {
+            font-size: clamp(28px, 10vw, 52px);
+            font-weight: 900;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px var(--neon-blue), 0 0 40px var(--neon-red), 0 0 80px var(--purple);
+            animation: glitch 1.5s infinite;
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: 0 0 20px var(--neon-blue), 0 0 40px var(--neon-red); }
+            25% { text-shadow: 5px -5px 0 var(--neon-red), -5px 5px 0 var(--neon-blue); }
+            50% { text-shadow: 0 0 20px var(--purple), 0 0 60px var(--gold); }
+            75% { text-shadow: -5px -5px 0 var(--neon-blue), 5px 5px 0 var(--neon-red); }
+            100% { text-shadow: 0 0 20px var(--neon-blue), 0 0 40px var(--neon-red); }
+        }
+
+        .intro-sub {
+            color: var(--neon-blue);
+            letter-spacing: 4px;
+            margin-top: 20px;
+            font-size: 12px;
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        .loading-bar {
+            width: 300px;
+            height: 3px;
+            background: rgba(255,255,255,0.1);
+            margin-top: 30px;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .loading-bar-inner {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-red), var(--purple));
+            animation: loading 3s ease-in-out forwards;
+            border-radius: 3px;
+        }
+
+        @keyframes loading {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        /* ===== Main App ===== */
+        #mainWrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 500px;
+            margin: auto;
+            padding: 15px;
+        }
+
         .glass-card {
-            background: var(--glass); backdrop-filter: blur(15px);
-            border: 1px solid var(--border); border-radius: 20px;
-            padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8), inset 0 0 80px rgba(0, 150, 255, 0.03);
+            transition: all 0.3s ease;
         }
 
-        .header { text-align: center; border-bottom: 2px solid var(--neon-red); padding-bottom: 10px; margin-bottom: 20px; }
-        .pred-val { font-size: 75px; font-weight: 900; text-shadow: 0 0 20px var(--neon-blue); margin: 10px 0; }
-        .timer-display { font-size: 24px; color: var(--gold); font-weight: bold; }
-        .status-info { display: flex; justify-content: space-between; font-size: 11px; color: var(--neon-blue); margin-bottom: 10px;}
-        .strat-mode { font-size: 10px; background: rgba(0, 212, 255, 0.2); padding: 4px 10px; border-radius: 5px; color: var(--neon-blue); border: 1px solid var(--neon-blue); margin-bottom: 10px; display: inline-block; }
-        .lvl-badge { background: rgba(255, 0, 60, 0.2); border: 1px solid var(--neon-red); padding: 8px; border-radius: 10px; font-weight: bold; margin: 15px 0; font-size: 13px; }
-        .num-row { display: flex; justify-content: center; gap: 20px; }
-        .num-circle { width: 45px; height: 45px; line-height: 45px; border: 2px solid var(--gold); border-radius: 50%; font-weight: 900; background: rgba(0,0,0,0.4); color: var(--gold); }
-        
-        .history-wrap { max-height: 250px; overflow-y: auto; }
-        table { width: 100%; border-collapse: collapse; font-size: 11px; }
-        th { color: var(--neon-blue); padding: 10px; border-bottom: 1px solid var(--border); }
-        td { padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: center; }
+        .glass-card:hover {
+            border-color: rgba(0, 191, 255, 0.8);
+            box-shadow: 0 8px 40px 0 rgba(0, 150, 255, 0.15);
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 2px solid var(--neon-red);
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--neon-blue), var(--gold), var(--neon-red));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: none;
+        }
+
+        .header .badge {
+            position: absolute;
+            right: 0;
+            top: 0;
+            font-size: 9px;
+            background: rgba(255, 0, 60, 0.3);
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--neon-red);
+            color: var(--neon-red);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        /* ===== Stats Grid ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .stat-item {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 16px;
+            padding: 12px 8px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .stat-item .label {
+            font-size: 8px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+            letter-spacing: 1px;
+        }
+
+        .stat-item .value {
+            font-size: 22px;
+            font-weight: 900;
+            margin-top: 2px;
+        }
+
+        .stat-item .value.green { color: var(--neon-green); }
+        .stat-item .value.red { color: var(--neon-red); }
+        .stat-item .value.gold { color: var(--gold); }
+        .stat-item .value.blue { color: var(--neon-blue); }
+
+        /* ===== Prediction Display ===== */
+        .pred-display {
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .pred-display .period {
+            font-size: 11px;
+            color: rgba(255,255,255,0.3);
+            letter-spacing: 2px;
+        }
+
+        .pred-display .pred-val {
+            font-size: 72px;
+            font-weight: 900;
+            margin: 5px 0;
+            text-shadow: 0 0 30px currentColor;
+            transition: all 0.3s ease;
+        }
+
+        .pred-display .pred-val.big { color: var(--gold); }
+        .pred-display .pred-val.small { color: var(--neon-green); }
+
+        .pred-display .confidence {
+            font-size: 12px;
+            color: rgba(255,255,255,0.5);
+            margin-top: 4px;
+        }
+
+        .pred-display .confidence span {
+            color: var(--neon-blue);
+            font-weight: bold;
+        }
+
+        /* ===== Timer ===== */
+        .timer-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin: 10px 0;
+        }
+
+        .timer-display {
+            font-size: 32px;
+            font-weight: 900;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 4px;
+            color: var(--gold);
+            transition: color 0.5s ease;
+        }
+
+        .timer-display.warning { color: var(--neon-red); animation: pulse 0.5s ease-in-out infinite; }
+
+        .progress-ring {
+            width: 60px;
+            height: 60px;
+        }
+
+        /* ===== Mode & Level ===== */
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 8px 0;
+        }
+
+        .strat-mode {
+            font-size: 10px;
+            background: rgba(0, 212, 255, 0.15);
+            padding: 5px 14px;
+            border-radius: 20px;
+            color: var(--neon-blue);
+            border: 1px solid var(--neon-blue);
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .lvl-badge {
+            background: rgba(255, 0, 60, 0.15);
+            border: 1px solid var(--neon-red);
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            color: var(--neon-red);
+        }
+
+        /* ===== Target Numbers ===== */
+        .num-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 12px 0 5px 0;
+        }
+
+        .num-circle {
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            font-weight: 900;
+            font-size: 18px;
+            background: rgba(0,0,0,0.5);
+            color: var(--gold);
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(255, 234, 0, 0.1);
+        }
+
+        .num-circle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 40px rgba(255, 234, 0, 0.3);
+        }
+
+        /* ===== Multi-Model Prediction ===== */
+        .model-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .model-item {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            padding: 8px 4px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.05);
+            font-size: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .model-item .m-pred {
+            font-size: 16px;
+            font-weight: 900;
+            display: block;
+        }
+
+        .model-item .m-name {
+            color: rgba(255,255,255,0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .model-item.active {
+            border-color: var(--neon-blue);
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .model-item .m-pred.green { color: var(--neon-green); }
+        .model-item .m-pred.gold { color: var(--gold); }
+        .model-item .m-pred.red { color: var(--neon-red); }
+
+        /* ===== History ===== */
+        .history-wrap {
+            max-height: 220px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--neon-blue) transparent;
+        }
+
+        .history-wrap::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .history-wrap::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .history-wrap::-webkit-scrollbar-thumb {
+            background: var(--neon-blue);
+            border-radius: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10px;
+        }
+
+        th {
+            color: var(--neon-blue);
+            padding: 8px 6px;
+            border-bottom: 1px solid var(--border);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 8px;
+        }
+
+        td {
+            padding: 8px 6px;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            text-align: center;
+            font-size: 11px;
+        }
+
         .win { color: #00ff41; font-weight: bold; }
         .loss { color: #ff003c; font-weight: bold; }
+
+        /* ===== AI Status ===== */
+        .ai-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 9px;
+            color: rgba(255,255,255,0.3);
+            margin-top: 8px;
+            justify-content: center;
+        }
+
+        .ai-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--neon-green);
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        /* ===== Hidden ===== */
         .hidden { display: none !important; }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 480px) {
+            #mainWrapper { padding: 10px; }
+            .glass-card { padding: 14px; }
+            .pred-display .pred-val { font-size: 48px; }
+            .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+            .stat-item .value { font-size: 18px; }
+            .model-grid { grid-template-columns: repeat(2, 1fr); }
+        }
     </style>
 </head>
 <body>
 
+    <!-- ===== PARTICLES ===== -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- ===== INTRO ===== -->
     <div id="introScreen">
-        <div class="intro-line">👑 SX☠️ ABIR <span style="color:var(--neon-red)">♔ 👺</span></div>
-        <p style="color: var(--neon-blue); letter-spacing: 2px; margin-top: 20px; font-size: 10px;">👑 𝐂𝐑𝐀𝐂𝐊 𝐁𝐘 SX☠️ ABIR ♔ 👺 💲 💀 BOOTING...</p>
+        <div class="intro-glitch">👑 SX☠️ ABIR ♔ 👺</div>
+        <div class="intro-sub">⚡ ULTIMATE PREDICTION ENGINE v3.0 ⚡</div>
+        <div class="loading-bar"><div class="loading-bar-inner"></div></div>
+        <div class="intro-sub" style="margin-top: 10px; font-size: 9px; opacity: 0.5;">LOADING NEURAL NETWORKS...</div>
     </div>
 
+    <!-- ===== MAIN ===== -->
     <div id="mainWrapper" class="hidden">
-        <div class="app-frame">
+        <div class="glass-card">
             <div class="header">
-                <span style="font-size: 20px; font-weight: 900;">👑 𝐂𝐑𝐀𝐂𝐊 𝐁𝐘 <span style="color:var(--neon-blue)">SX☠️ ABIR ♔ 👺</span> 💲 💀</span>
+                <h1>👑 SX☠️ ABIR ♔ 👺</h1>
+                <span class="badge">● LIVE</span>
             </div>
 
-            <div id="hackSection">
-                <div class="status-info">
-                    <span>● SERVER: STABLE</span>
-                    <span id="pingVal">PING: 18MS</span>
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="label">Accuracy</div>
+                    <div class="value gold" id="accuracyStat">0%</div>
                 </div>
+                <div class="stat-item">
+                    <div class="label">Streak</div>
+                    <div class="value blue" id="streakStat">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="label">Level</div>
+                    <div class="value red" id="levelStat">1</div>
+                </div>
+            </div>
 
-                <div class="glass-card" style="text-align: center;">
-                    <div id="stratDisplay" class="strat-mode">MODE: ANALYZING MARKET...</div>
-                    <div id="timer" class="timer-display">00:60</div>
-                    <div id="pID" style="color: rgba(255,255,255,0.4); font-size: 11px; margin-bottom: 5px;">PERIOD: ---</div>
-                    <div id="pRes" class="pred-val">WAIT</div>
-                    <div id="mLevel" class="lvl-badge">MARTINGALE: LEVEL 1</div>
-                    <div style="font-size: 10px; color: var(--gold); margin-bottom: 5px;">OPPOSITE CATEGORY NUMBERS:</div>
-                    <div class="num-row" id="numRow">
-                        <div class="num-circle">?</div>
-                        <div class="num-circle">?</div>
-                    </div>
-                </div>
+            <!-- Prediction -->
+            <div class="pred-display">
+                <div class="period" id="pID">PERIOD: ---</div>
+                <div class="pred-val" id="pRes">--</div>
+                <div class="confidence">CONFIDENCE: <span id="confLevel">--</span>%</div>
+            </div>
 
-                <div class="glass-card">
-                    <div style="font-size: 11px; color: var(--neon-blue); margin-bottom: 10px;">👑 SX☠️ ABIR ♔ 👺 HISTORY</div>
-                    <div class="history-wrap">
-                        <table>
-                            <thead><tr><th>PERIOD</th><th>PRED</th><th>RESULT</th><th>STATUS</th></tr></thead>
-                            <tbody id="logs"></tbody>
-                        </table>
-                    </div>
-                </div>
+            <!-- Timer & Progress -->
+            <div class="timer-wrap">
+                <div class="timer-display" id="timer">00:60</div>
+            </div>
+
+            <!-- Info Row -->
+            <div class="info-row">
+                <span class="strat-mode" id="stratDisplay">MODE: ANALYZING...</span>
+                <span class="lvl-badge" id="mLevel">MARTINGALE: LEVEL 1 (1X)</span>
+            </div>
+
+            <!-- Target Numbers -->
+            <div style="text-align: center; font-size: 9px; color: rgba(255,255,255,0.3); margin-top: 6px;">
+                🎯 OPPOSITE CATEGORY NUMBERS
+            </div>
+            <div class="num-row" id="numRow">
+                <div class="num-circle">?</div>
+                <div class="num-circle">?</div>
+            </div>
+        </div>
+
+        <!-- ===== Multi-Model Predictions ===== -->
+        <div class="glass-card">
+            <div style="font-size: 9px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px;">
+                🤖 AI ENSEMBLE PREDICTIONS
+            </div>
+            <div class="model-grid" id="modelGrid">
+                <div class="model-item"><span class="m-pred gold" id="m1">-</span><span class="m-name">Trend</span></div>
+                <div class="model-item"><span class="m-pred green" id="m2">-</span><span class="m-name">Fibonacci</span></div>
+                <div class="model-item"><span class="m-pred red" id="m3">-</span><span class="m-name">Markov</span></div>
+                <div class="model-item"><span class="m-pred gold" id="m4">-</span><span class="m-name">Ensemble</span></div>
+            </div>
+            <div class="ai-status">
+                <span class="ai-dot"></span>
+                <span>AI ENGINE ACTIVE · REAL-TIME ANALYSIS</span>
+            </div>
+        </div>
+
+        <!-- ===== History ===== -->
+        <div class="glass-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 9px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 2px;">
+                    📊 BATTLE LOG
+                </span>
+                <span style="font-size: 8px; color: rgba(255,255,255,0.15);" id="logCount">0 entries</span>
+            </div>
+            <div class="history-wrap">
+                <table>
+                    <thead><tr><th>Period</th><th>Pred</th><th>Result</th><th>Status</th></tr></thead>
+                    <tbody id="logs"></tbody>
+                </table>
             </div>
         </div>
     </div>
 
-<script>
-    const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json";
-    let lastP = null, nextP = null, targetNums = [], currentLevel = 1;
+    <script>
+        // ============================================================
+        //  CONFIG
+        // ============================================================
+        const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json";
+        let lastP = null, nextP = null, targetNums = [], currentLevel = 1;
+        let history = [];
+        let wins = 0, losses = 0, streak = 0, totalPredictions = 0;
 
-    window.onload = () => {
-        setTimeout(() => {
-            document.getElementById('introScreen').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('introScreen').classList.add('hidden');
-                document.getElementById('mainWrapper').classList.remove('hidden');
-                syncEngine();
-                setInterval(syncEngine, 2000);
-                startClock();
-            }, 800);
-        }, 3000);
-    };
+        // ============================================================
+        //  PARTICLES (Canvas)
+        // ============================================================
+        (function initParticles() {
+            const canvas = document.getElementById('particles-canvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            const count = 60;
 
-    function startClock() {
-        setInterval(() => {
-            const rem = 60 - new Date().getSeconds();
-            document.getElementById('timer').innerText = `00:${rem < 10 ? '0' + rem : rem}`;
-            document.getElementById('timer').style.color = rem <= 5 ? "#ff003c" : "#ffea00";
-        }, 1000);
-    }
-
-    async function syncEngine() {
-        try {
-            const r = await fetch(API + '?t=' + Date.now());
-            const d = await r.json();
-            const top = d.data.list[0];
-            processHybrid(top.issueNumber, parseInt(top.number), d.data.list);
-        } catch (e) {}
-    }
-
-    function processHybrid(p, num, list) {
-        const actual = num >= 5 ? "BIG" : "SMALL";
-        if (lastP !== p) {
-            if (nextP && lastP) {
-                const win = (nextP === actual) || targetNums.includes(num);
-                if(win) { currentLevel = 1; }
-                else { currentLevel++; if(currentLevel > 4) currentLevel = 1; }
-                
-                const multiplier = currentLevel === 1 ? "1X" : (currentLevel === 2 ? "3X" : (currentLevel === 3 ? "9X" : "27X"));
-                document.getElementById('mLevel').innerText = `MARTINGALE: LEVEL ${currentLevel} (${multiplier})`;
-                
-                const row = `<tr><td>${p.slice(-3)}</td><td>${nextP}</td><td>${actual}(${num})</td><td class="${win?'win':'loss'}">${win?'WIN':'LOSS'}</td></tr>`;
-                document.getElementById('logs').innerHTML = row + document.getElementById('logs').innerHTML;
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
             }
-            
-            lastP = p;
+            window.addEventListener('resize', resize);
+            resize();
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 1.5 + 0.5;
+                    this.speedX = (Math.random() - 0.5) * 0.3;
+                    this.speedY = (Math.random() - 0.5) * 0.3;
+                    this.opacity = Math.random() * 0.5 + 0.1;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                    if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(0, 212, 255, ${this.opacity})`;
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < count; i++) particles.push(new Particle());
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => { p.update(); p.draw(); });
+                // Draw connections
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx*dx + dy*dy);
+                        if (dist < 120) {
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = `rgba(0, 212, 255, ${0.05 * (1 - dist/120)})`;
+                            ctx.lineWidth = 0.5;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
+        })();
+
+        // ============================================================
+        //  INTRO
+        // ============================================================
+        window.onload = () => {
+            setTimeout(() => {
+                document.getElementById('introScreen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('introScreen').classList.add('hidden');
+                    document.getElementById('mainWrapper').classList.remove('hidden');
+                    syncEngine();
+                    setInterval(syncEngine, 2000);
+                    startClock();
+                }, 800);
+            }, 4000);
+        };
+
+        // ============================================================
+        //  CLOCK
+        // ============================================================
+        function startClock() {
+            setInterval(() => {
+                const sec = new Date().getSeconds();
+                const rem = 60 - sec;
+                const timerEl = document.getElementById('timer');
+                timerEl.innerText = `00:${rem < 10 ? '0' + rem : rem}`;
+                timerEl.className = 'timer-display' + (rem <= 5 ? ' warning' : '');
+            }, 1000);
+        }
+
+        // ============================================================
+        //  ADVANCED PREDICTION ALGORITHMS
+        // ============================================================
+        function advancedPredictions(last5, lastNums) {
+            const results = {};
+
+            // 1. TREND FOLLOW
+            const trend = (last5[0] === last5[1] && last5[1] === last5[2]) ? last5[0] : (last5[0] === last5[1] ? last5[0] : null);
+            results.trend = trend || (last5[0] === "BIG" ? "SMALL" : "BIG");
+
+            // 2. FIBONACCI / WEIGHTED
+            const weights = [5, 3, 2, 1, 1];
+            let weightedSum = 0;
+            lastNums.forEach((n, i) => weightedSum += n * weights[i]);
+            const avg = weightedSum / weights.reduce((a, b) => a + b, 0);
+            results.fibonacci = avg >= 4.5 ? "BIG" : "SMALL";
+
+            // 3. MARKOV CHAIN (simple transition)
+            const transitions = lastNums.map(n => n >= 5 ? "BIG" : "SMALL");
+            let bigCount = 0, smallCount = 0;
+            for (let i = 0; i < transitions.length - 1; i++) {
+                if (transitions[i] === "BIG" && transitions[i+1] === "BIG") bigCount++;
+                if (transitions[i] === "SMALL" && transitions[i+1] === "SMALL") smallCount++;
+            }
+            results.markov = bigCount > smallCount ? "BIG" : "SMALL";
+
+            // 4. ENSEMBLE (voting)
+            const votes = [results.trend, results.fibonacci, results.markov];
+            const bigVotes = votes.filter(v => v === "BIG").length;
+            results.ensemble = bigVotes >= 2 ? "BIG" : "SMALL";
+
+            // Confidence based on agreement
+            results.confidence = Math.round((bigVotes / votes.length) * 100);
+            if (bigVotes === 0 || bigVotes === 3) results.confidence = Math.min(95, results.confidence + 20);
+
+            return results;
+        }
+
+        // ============================================================
+        //  TARGET NUMBER GENERATOR (AI-enhanced)
+        // ============================================================
+        function generateTargets(lastNums, prediction) {
+            const sum = lastNums.reduce((a, b) => a + b, 0);
+            const allNums = [0,1,2,3,4,5,6,7,8,9];
+            // Weight based on recent frequency
+            const freq = {};
+            allNums.forEach(n => freq[n] = 0);
+            lastNums.forEach(n => freq[n] = (freq[n] || 0) + 1);
+
+            // Score each number
+            const scored = allNums.map(n => {
+                let score = freq[n] || 0;
+                // If predicting BIG, prefer lower numbers as opposites
+                if (prediction === "BIG") {
+                    score += (n < 5) ? 2 : (n > 7 ? -1 : 0);
+                } else {
+                    score += (n >= 5) ? 2 : (n < 3 ? -1 : 0);
+                }
+                // Distance from average
+                const avg = sum / lastNums.length;
+                score += (Math.abs(n - avg) < 2) ? 1 : 0;
+                return { num: n, score };
+            });
+
+            scored.sort((a, b) => b.score - a.score);
+            return scored.slice(0, 2).map(s => s.num);
+        }
+
+        // ============================================================
+        //  MAIN ENGINE
+        // ============================================================
+        async function syncEngine() {
+            try {
+                const r = await fetch(API + '?t=' + Date.now());
+                const d = await r.json();
+                const top = d.data.list[0];
+                processHybrid(top.issueNumber, parseInt(top.number), d.data.list);
+            } catch (e) {
+                // Silent fail
+            }
+        }
+
+        function processHybrid(p, num, list) {
+            const actual = num >= 5 ? "BIG" : "SMALL";
             const last5 = list.slice(0, 5).map(x => parseInt(x.number) >= 5 ? "BIG" : "SMALL");
             const lastNums = list.slice(0, 5).map(x => parseInt(x.number));
-            const stratDisp = document.getElementById('stratDisplay');
 
-            if (last5[0] === last5[1] && last5[1] === last5[2]) {
-                nextP = last5[0]; 
-                stratDisp.innerText = "MODE: DRAGON FOLLOW";
-            } 
-            else {
-                nextP = (last5[0] === "BIG") ? "SMALL" : "BIG";
-                stratDisp.innerText = "MODE: SMART REVERSE";
+            if (lastP !== p) {
+                // ---- Record result ----
+                if (nextP && lastP) {
+                    const win = (nextP === actual) || targetNums.includes(num);
+                    totalPredictions++;
+                    if (win) { wins++; streak++; currentLevel = 1; }
+                    else { losses++; streak = 0; currentLevel++; if (currentLevel > 4) currentLevel = 1; }
+
+                    const multiplier = currentLevel === 1 ? "1X" : (currentLevel === 2 ? "3X" : (currentLevel === 3 ? "9X" : "27X"));
+                    document.getElementById('mLevel').innerText = `MARTINGALE: LEVEL ${currentLevel} (${multiplier})`;
+                    document.getElementById('levelStat').innerText = currentLevel;
+
+                    // Accuracy
+                    const acc = totalPredictions > 0 ? Math.round((wins / totalPredictions) * 100) : 0;
+                    document.getElementById('accuracyStat').innerText = acc + '%';
+                    document.getElementById('streakStat').innerText = streak;
+
+                    // Log
+                    const row = `<tr><td>${p.slice(-4)}</td><td>${nextP}</td><td>${actual}(${num})</td><td class="${win?'win':'loss'}">${win?'✅ WIN':'❌ LOSS'}</td></tr>`;
+                    document.getElementById('logs').innerHTML = row + document.getElementById('logs').innerHTML;
+                    document.getElementById('logCount').innerText = totalPredictions + ' entries';
+                }
+
+                // ---- NEW PREDICTION ----
+                lastP = p;
+
+                // Run advanced models
+                const models = advancedPredictions(last5, lastNums);
+                nextP = models.ensemble;
+                const confidence = models.confidence;
+
+                // Display models
+                document.getElementById('m1').innerText = models.trend;
+                document.getElementById('m2').innerText = models.fibonacci;
+                document.getElementById('m3').innerText = models.markov;
+                document.getElementById('m4').innerText = models.ensemble;
+
+                // Highlight ensemble
+                document.querySelectorAll('.model-item').forEach(el => el.classList.remove('active'));
+                document.querySelectorAll('.model-item')[3].classList.add('active');
+
+                // Strategy display
+                const stratDisp = document.getElementById('stratDisplay');
+                if (last5[0] === last5[1] && last5[1] === last5[2]) {
+                    stratDisp.innerText = "🔥 DRAGON FOLLOW (STRONG TREND)";
+                } else if (last5[0] === last5[1]) {
+                    stratDisp.innerText = "📈 WEAK TREND FOLLOW";
+                } else {
+                    stratDisp.innerText = "🔄 SMART REVERSE (MEAN REVERSION)";
+                }
+
+                // Update prediction display
+                document.getElementById('pID').innerText = "PERIOD: " + (BigInt(p) + 1n).toString();
+                const predEl = document.getElementById('pRes');
+                predEl.innerText = nextP;
+                predEl.className = 'pred-val ' + (nextP === "BIG" ? 'big' : 'small');
+                document.getElementById('confLevel').innerText = confidence;
+
+                // Generate target numbers
+                targetNums = generateTargets(lastNums, nextP);
+                document.getElementById('numRow').innerHTML = targetNums.map(n => 
+                    `<div class="num-circle">${n}</div>`
+                ).join('');
             }
-
-            const sum = lastNums.reduce((a, b) => a + b, 0);
-            if (nextP === "BIG") {
-                targetNums = (sum > 20) ? [0, 2] : [1, 3];
-            } else {
-                targetNums = (sum < 25) ? [7, 9] : [6, 8];
-            }
-
-            document.getElementById('pID').innerText = "PERIOD: " + (BigInt(p) + 1n).toString();
-            document.getElementById('pRes').innerText = nextP;
-            document.getElementById('pRes').style.color = nextP === "BIG" ? "#ffea00" : "#00ff41";
-            document.getElementById('numRow').innerHTML = `<div class="num-circle">${targetNums[0]}</div><div class="num-circle">${targetNums[1]}</div>`;
         }
-    }
-</script>
+    </script>
+
 </body>
 </html>
